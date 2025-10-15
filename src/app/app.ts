@@ -57,11 +57,12 @@ export class App {
     setTimeout(() => {
       this.loading.set(false);
       if (Math.random() > 0.25) {
-        this.posts.set(MOCK_POSTS);
+        const randomPosts = MOCK_POSTS.sort(() => 0.5 - Math.random()).slice(0, 10);
+        this.posts.set(randomPosts);
       } else {
         this.errorMessage.set('Failed to generate content. Please try again.');
       }
-    }, 4000);
+    }, 3000);
   }
 
   onCopyPost(post: Post): void {

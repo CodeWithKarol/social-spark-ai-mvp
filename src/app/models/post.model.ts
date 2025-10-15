@@ -13,4 +13,6 @@ export type PostCategory =
   | 'Inspirational Quote'
   | 'Customer Feature'
   | 'Seasonal Content'
-  | 'Community Engagement';
+  | 'Community Engagement'
+  | 'Event Announcement'
+  | 'Product Highlight';
