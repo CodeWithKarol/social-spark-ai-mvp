@@ -68,7 +68,13 @@
 <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 } @else if (errorMessage()) {
 <p class="error-message">{{ errorMessage() }}</p>
-} @else {
+} @else { @if (posts().length > 0) {
+<h1>Generated Content</h1>
+<p>Your personalized social media posts are ready!</p>
+
+<button mat-raised-button (click)="onExportPostsAsCsv()">Export to CSV</button>
+<button mat-raised-button (click)="onCopyAllPosts()">Copy All Posts</button>
+}
 <div class="posts-container">
   @for (post of posts(); track post.id) {
   <mat-card>

@@ -12,6 +12,8 @@ import { Post } from './models/post.model';
 import { MOCK_POSTS } from './models/mock-posts';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +34,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class App {
   private formBuilder = inject(FormBuilder);
+  private clipboard = inject(Clipboard);
+  private snackbar = inject(MatSnackBar);
   protected businessTypes = BUSINESS_TYPES;
   protected audienceTypes = AUDIENCE_TYPES;
   protected brandTones = BRAND_TONES;
@@ -70,15 +74,13 @@ export class App {
     const textToCopy = `${post.title}\n\n${post.content}\n\n${post.hashtags.join(' ')}`;
 
     // Copy to clipboard
-    navigator.clipboard
-      .writeText(textToCopy)
-      .then(() => {
-        console.log('Post copied to clipboard:', post.title);
-        // You could add a snackbar notification here
-      })
-      .catch((err) => {
-        console.error('Failed to copy post:', err);
-      });
+    this.clipboard.copy(textToCopy);
+
+    // Log the copied text
+    console.log('Post copied to clipboard:', textToCopy);
+
+    // Show a snackbar notification
+    this.snackbar.open('Post copied to clipboard!', 'Close', { duration: 2000 });
   }
 
   onEditPost(post: Post): void {
@@ -91,5 +93,44 @@ export class App {
     // Remove the post from the posts signal
     const updatedPosts = this.posts().filter((p) => p.id !== postId);
     this.posts.set(updatedPosts);
+  }
+
+  onCopyAllPosts() {
+    // Create the text to copy for all posts
+    const allPostsText = this.posts()
+      .map((post) => `${post.title}\n\n${post.content}\n\n${post.hashtags.join(' ')}`)
+      .join('\n\n---\n\n');
+
+    // Copy to clipboard
+    this.clipboard.copy(allPostsText);
+
+    // Log the copied text
+    console.log('All posts copied to clipboard:', allPostsText);
+
+    // Show a snackbar notification
+    this.snackbar.open('All posts copied to clipboard!', 'Close', { duration: 2000 });
+  }
+
+  onExportPostsAsCsv() {
+    const headers = ['ID', 'Category', 'Title', 'Content', 'Hashtags'];
+    const csvRows = this.posts().map((post) => {
+      const escapedContent = post.content.replace(/"/g, '""'); // Escape double quotes
+      const escapedTitle = post.title.replace(/"/g, '""'); // Escape double quotes
+      const hashtags = post.hashtags.join(' ');
+      return `"${post.id}","${post.category}","${escapedTitle}","${escapedContent}","${hashtags}"`;
+    });
+
+    const csvContent = [headers.join(','), ...csvRows].join('\n');
+
+    // Create a blob and trigger a download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'generated_posts.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 }
