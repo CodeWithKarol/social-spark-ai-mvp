@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Post } from './models/post.model';
+import { MOCK_POSTS } from './models/mock-posts';
 
 @Component({
   selector: 'app-root',
@@ -35,8 +37,26 @@ export class App {
     brandTone: [null, { validators: [Validators.required] }],
   });
 
+  loading = signal(false);
+  errorMessage = signal<string | null>(null);
+  posts = signal<Post[]>([]);
+
   onSubmit(): void {
     const formData = this.contentForm.value;
     console.log('Form submitted:', formData);
+
+    this.loading.set(true);
+    this.errorMessage.set(null);
+    this.posts.set([]);
+
+    // Simulate an async operation (e.g., API call)
+    setTimeout(() => {
+      this.loading.set(false);
+      if (Math.random() > 0.25) {
+        this.posts.set(MOCK_POSTS);
+      } else {
+        this.errorMessage.set('Failed to generate content. Please try again.');
+      }
+    }, 4000);
   }
 }

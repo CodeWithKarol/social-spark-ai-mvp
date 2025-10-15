@@ -63,3 +63,22 @@
     </button>
   </mat-card-actions>
 </mat-card>
+
+@if (loading()) {
+<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+} @else if (errorMessage()) {
+<p>{{ errorMessage() }}</p>
+} @else { @for (post of posts(); track post.id) {
+<mat-card>
+  <mat-card-title>{{ post.title }}</mat-card-title>
+  <mat-card-content>
+    <p>{{ post.content }}</p>
+    <p>
+      <strong>Category:</strong> {{ post.category }} | <strong>Hashtags:</strong>
+      {{ post.hashtags.join(', ') }}
+    </p>
+  </mat-card-content>
+</mat-card>
+} @empty {
+<p>No posts generated yet.</p>
+} }
