@@ -1,0 +1,150 @@
+// Container padding
+:host {
+  display: block;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Header section
+mat-toolbar {
+  margin-bottom: 32px;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+// Intro paragraph
+> p {
+  margin-bottom: 32px;
+  padding: 0 8px;
+  line-height: 1.6;
+}
+
+// Form card
+mat-card {
+  margin-bottom: 24px;
+  padding: 16px;
+
+  mat-card-title {
+    margin-bottom: 16px;
+  }
+
+  mat-card-content {
+    padding: 16px 0;
+
+    p {
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+  }
+
+  mat-card-actions {
+    padding: 16px 0 8px 0;
+
+    button {
+      margin-right: 8px;
+    }
+  }
+}
+
+// Form fields
+form {
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+}
+
+// Loading spinner
+mat-progress-spinner {
+  margin: 32px auto;
+  display: block;
+}
+
+// Error message
+> p {
+  padding: 16px;
+  margin: 16px 0;
+}
+
+// Posts grid - Responsive
+.posts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+
+  // Tablet and larger
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+
+  // Desktop
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  }
+}
+
+// Individual post cards in grid
+.posts-container {
+  mat-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0; // Override default card margin
+
+    mat-card-content {
+      flex-grow: 1;
+
+      p {
+        margin-bottom: 12px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      strong {
+        margin-right: 4px;
+      }
+    }
+
+    mat-card-actions {
+      padding: 8px 8px 8px 0;
+      margin-top: auto;
+      display: flex;
+      justify-content: flex-end;
+      gap: 4px;
+
+      button {
+        margin: 0;
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  // Empty state message
+  .empty-state {
+    grid-column: 1 / -1; // Span all columns
+    text-align: center;
+    padding: 32px;
+    margin: 24px 0;
+  }
+}
+
+// Error message
+.error-message {
+  text-align: center;
+  padding: 16px;
+  margin: 16px 0;
+  color: #d32f2f;
+}

@@ -10,6 +10,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Post } from './models/post.model';
 import { MOCK_POSTS } from './models/mock-posts';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +24,8 @@ import { MOCK_POSTS } from './models/mock-posts';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -58,5 +62,33 @@ export class App {
         this.errorMessage.set('Failed to generate content. Please try again.');
       }
     }, 4000);
+  }
+
+  onCopyPost(post: Post): void {
+    // Create the text to copy (title + content + hashtags)
+    const textToCopy = `${post.title}\n\n${post.content}\n\n${post.hashtags.join(' ')}`;
+
+    // Copy to clipboard
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        console.log('Post copied to clipboard:', post.title);
+        // You could add a snackbar notification here
+      })
+      .catch((err) => {
+        console.error('Failed to copy post:', err);
+      });
+  }
+
+  onEditPost(post: Post): void {
+    console.log('Edit post:', post);
+    // TODO: Implement edit functionality (e.g., open a dialog with a form)
+  }
+
+  onDeletePost(postId: string): void {
+    console.log('Delete post:', postId);
+    // Remove the post from the posts signal
+    const updatedPosts = this.posts().filter((p) => p.id !== postId);
+    this.posts.set(updatedPosts);
   }
 }

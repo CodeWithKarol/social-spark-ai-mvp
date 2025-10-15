@@ -67,18 +67,33 @@
 @if (loading()) {
 <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 } @else if (errorMessage()) {
-<p>{{ errorMessage() }}</p>
-} @else { @for (post of posts(); track post.id) {
-<mat-card>
-  <mat-card-title>{{ post.title }}</mat-card-title>
-  <mat-card-content>
-    <p>{{ post.content }}</p>
-    <p>
-      <strong>Category:</strong> {{ post.category }} | <strong>Hashtags:</strong>
-      {{ post.hashtags.join(', ') }}
-    </p>
-  </mat-card-content>
-</mat-card>
-} @empty {
-<p>No posts generated yet.</p>
-} }
+<p class="error-message">{{ errorMessage() }}</p>
+} @else {
+<div class="posts-container">
+  @for (post of posts(); track post.id) {
+  <mat-card>
+    <mat-card-title>{{ post.title }}</mat-card-title>
+    <mat-card-content>
+      <p>{{ post.content }}</p>
+      <p>
+        <strong>Category:</strong> {{ post.category }} | <strong>Hashtags:</strong>
+        {{ post.hashtags.join(', ') }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-icon-button (click)="onCopyPost(post)" matTooltip="Copy Post">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+      <button mat-icon-button (click)="onEditPost(post)" matTooltip="Edit Post">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="onDeletePost(post.id)" matTooltip="Delete Post">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  } @empty {
+  <p class="empty-state">No posts generated yet.</p>
+  }
+</div>
+}
