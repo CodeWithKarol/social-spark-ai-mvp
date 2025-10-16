@@ -4,6 +4,13 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+
+  // Intro paragraph
+  > p {
+    margin-bottom: 32px;
+    padding: 0 8px;
+    line-height: 1.6;
+  }
 }
 
 // Header section
@@ -15,13 +22,6 @@ h1 {
   margin-top: 0;
   margin-bottom: 16px;
   padding: 0 8px;
-}
-
-// Intro paragraph
-> p {
-  margin-bottom: 32px;
-  padding: 0 8px;
-  line-height: 1.6;
 }
 
 // Form card
@@ -63,12 +63,6 @@ form {
 mat-progress-spinner {
   margin: 32px auto;
   display: block;
-}
-
-// Error message
-> p {
-  padding: 16px;
-  margin: 16px 0;
 }
 
 // Posts grid - Responsive
